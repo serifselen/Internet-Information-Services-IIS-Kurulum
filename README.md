@@ -474,6 +474,6 @@ Set-WebConfigurationProperty -PSPath "IIS:\" -Filter "system.webServer/httpProto
 > ⚠️ Bu doküman eğitim ve test ortamları için hazırlanmıştır. Üretimde güvenlik önlemleri uygulanmalıdır.
 
 > 📧 **Destek İçin**: [mserifselen@gmail.com](mailto:mserifselen@gmail.com)  
-> 🔗 **GitHub Repository**: [https://github.com/serifselen/Windows-Server-2025-Kurulum](https://github.com/serifselen/Windows-Server-2025-Kurulum)
+> 🔗 **GitHub Repository**: [https://github.com/serifselen/](https://github.com/serifselen/)
 
 ---
