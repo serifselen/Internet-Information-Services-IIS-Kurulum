@@ -360,7 +360,7 @@ icacls "C:\inetpub\wwwroot" /grant "IUSR:(OI)(CI)(RX)"
 
 ---
 
-## 7. DOKÜMAN BİLGİLERİ
+📜 Doküman Bilgileri
 
 | Özellik | Değer |
 |---------|-------|
