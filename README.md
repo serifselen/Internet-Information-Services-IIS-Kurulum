@@ -1,16 +1,39 @@
-TEKNİK DOKÜMAN: WINDOWS SERVER 2025 ÜZERİNDE WEB SERVER (IIS) KURULUMU VE WEB SİTESİ EKLEME
+# Web Server (IIS) Kurulum Rehberi
+## Windows Server 2025 Üzerinde Web Server (IIS) Kurulumu
 
-Bu doküman, Windows Server 2025 Standard Evaluation sisteminde Web Server (IIS) rolünün kurulumunu ve yeni bir web sitesi eklemeyi adım adım açıklar. Tüm işlemler Server Manager arayüzü üzerinden gerçekleştirilir. Görseller "Images/" dizininde numaralandırılmıştır.
+Bu rehber, **Windows Server 2025 Standard Evaluation** sistemine **Web Server (IIS)** rolünün nasıl kurulacağını ve bir web sitesi eklenmesini adım adım açıklar. Kurulum, `Server Manager` aracılığıyla gerçekleştirilir.
 
 ---
 
-## 1. ÖN GEREKSİNİMLER VE HAZIRLIK
+## 📑 İçindekiler
+
+- [Ön Gereksinimler ve Hazırlık](#ön-gereksinimler-ve-hazırlık)
+- [Web Server (IIS) Kurulum Adımları](#-web-server-iis-kurulum-adımları)
+  - [Adım 1: Server Manager Ana Ekranı](#adım-1-server-manager-ana-ekranı)
+  - [Adım 2: "Add Roles and Features Wizard" Başlatma](#adım-2-add-roles-and-features-wizard-başlatma)
+  - [Adım 3: Kurulum Türü Seçimi](#adım-3-kurulum-türü-seçimi)
+  - [Adım 4: Hedef Sunucu Seçimi](#adım-4-hedef-sunucu-seçimi)
+  - [Adım 5: Web Server (IIS) Rolü Seçimi](#adım-5-web-server-iis-rolü-seçimi)
+  - [Adım 6: Kurulum Onaylama](#adım-6-kurulum-onaylama)
+  - [Adım 7: Kurulum İlerleme Durumu](#adım-7-kurulum-ilerleme-durumu)
+- [IIS Manager Arayüzüne Erişim](#-iis-manager-arayüzüne-erişim)
+- [Web Sitesi Ekleme](#-web-sitesi-ekleme)
+  - [Adım 8: Yeni Web Sitesi Oluşturma](#adım-8-yeni-web-sitesi-oluşturma)
+  - [Adım 9: Web Sitesi Yapılandırması](#adım-9-web-sitesi-yapılandırması)
+  - [Adım 10: Yeni Web Sitesi Listesi](#adım-10-yeni-web-sitesi-listesi)
+- [Kurulum Sonrası İşlemler](#-kurulum-sonrası-işlemler)
+- [Sık Karşılaşılan Sorunlar ve Çözümler](#-sık-karşılaşılan-sorunlar-ve-çözümler)
+- [Doküman Bilgileri](#-doküman-bilgileri)
+
+---
+
+## 🔰 Ön Gereksinimler ve Hazırlık
 
 ### Sistem Gereksinimleri
-- **İşletim Sistemi:** Windows Server 2025 Standard/Datacenter
-- **Bellek:** Minimum 2 GB (Önerilen 4+ GB)
-- **Depolama:** Minimum 10 GB boş alan
-- **Ağ:** Statik IP adresi ve DNS yapılandırması
+- **İşletim Sistemi**: Windows Server 2025 Standard/Datacenter
+- **Bellek**: Minimum 2 GB (Önerilen 4+ GB)
+- **Depolama**: Minimum 10 GB boş alan
+- **Ağ**: Statik IP adresi ve DNS yapılandırması
 
 ### Ağ Yapılandırması
 ```powershell
@@ -24,17 +47,23 @@ Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses "127.0.0.
 Rename-Computer -NewName "IIS-SERVER" -Restart
 ```
 
+### Güvenlik Hazırlıkları
+- Yönetici şifresi karmaşıklığı
+- Windows Update'lerin tamamlanması
+- Güvenlik duvarı port kontrolleri
+
 ---
 
-## 2. WEB SERVER (IIS) KURULUMU
+## 🖥️ Web Server (IIS) Kurulum Adımları
 
 ### Adım 1: Server Manager Ana Ekranı
+
 ![Adım 1](Images/1.png)
 
 **Teknik Detaylar:**
-- Server Manager otomatik olarak başlar
-- Sol üst köşede "QUICK START" bölümünde "Add roles and features" bağlantısı bulunur
--Rol bazlı kurulum için temel arayüz
+- Server Core kurulumunda PowerShell veya sconfig kullanılır
+- GUI modunda Server Manager otomatik başlar
+- Rol bazlı kurulum için temel arayüz
 
 ✅ IIS kurulumuna başlamak için **"Add roles and features"** bağlantısına tıklayın.
 
@@ -47,6 +76,7 @@ servermanager
 ---
 
 ### Adım 2: "Add Roles and Features Wizard" Başlatma
+
 ![Adım 2](Images/2.png)
 
 **Kritik Ön Kontroller:**
@@ -71,6 +101,7 @@ Get-WindowsUpdateLog
 ---
 
 ### Adım 3: Kurulum Türü Seçimi
+
 ![Adım 3](Images/3.png)
 
 **Kurulum Türleri Detayı:**
@@ -89,6 +120,7 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 ---
 
 ### Adım 4: Hedef Sunucu Seçimi
+
 ![Adım 4](Images/4.png)
 
 **Sunucu Seçim Teknik Detayları:**
@@ -107,6 +139,7 @@ Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, CsDomain
 ---
 
 ### Adım 5: Web Server (IIS) Rolü Seçimi
+
 ![Adım 5](Images/5.png)
 
 **Yüklenen Bileşenler:**
@@ -131,6 +164,7 @@ Açılan pencerede **Add Features** butonuna tıklayıp **Next** butonuna geçin
 ---
 
 ### Adım 6: Kurulum Onaylama
+
 ![Adım 6](Images/6.png)
 
 **Kurulum Bileşenleri Listesi:**
@@ -162,6 +196,7 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 ---
 
 ### Adım 7: Kurulum İlerleme Durumu
+
 ![Adım 7](Images/7.png)
 
 **Kurulum Aşamaları:**
@@ -177,9 +212,10 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools
 
 ---
 
-## 3. IIS MANAGER ARAYÜZÜNE ERİŞİM
+## 🌐 IIS Manager Arayüzüne Erişim
 
 ### Adım 8: IIS Manager'a Erişim
+
 ![Adım 8](Images/8.png)
 
 **Erişim Yolları:**
@@ -210,9 +246,10 @@ IIS Manager
 
 ---
 
-## 4. WEB SİTESİ EKLEME
+## 🌐 Web Sitesi Ekleme
 
 ### Adım 9: Yeni Web Sitesi Oluşturma
+
 ![Adım 9](Images/9.png)
 
 **Yeni Site Ekleme:**
@@ -234,6 +271,7 @@ New-WebSite -Name "iletisim" -PhysicalPath "C:\inetpub\wwwroot" -Port 80 -HostHe
 ---
 
 ### Adım 10: Web Sitesi Yapılandırması
+
 ![Adım 10](Images/10.png)
 
 **Site Yapılandırma Parametreleri:**
@@ -262,6 +300,7 @@ New-WebSite -Name "iletisim" -PhysicalPath "C:\inetpub\wwwroot" -Port 80 -HostHe
 ---
 
 ### Adım 11: Yeni Web Sitesi Listesi
+
 ![Adım 11](Images/11.png)
 
 **Site Listesi Görünümü:**
@@ -287,7 +326,7 @@ Get-WebSite -Name "iletisim" | Format-List *
 
 ---
 
-## 5. KURULUM SONRASI İŞLEMLER
+## 🔧 Kurulum Sonrası İşlemler
 
 ### 5.1. Test Sayfası Oluşturma
 ```powershell
@@ -315,7 +354,7 @@ Get-WebSite -Name "iletisim" | Format-List *
 
 ---
 
-## 6. SIK KARŞILAŞILAN SORUNLAR VE ÇÖZÜMLER
+## 🛠️ Sık Karşılaşılan Sorunlar ve Çözümler
 
 ### 6.1. Web Sitesi Erişilemiyor
 **Belirtiler:**
@@ -360,7 +399,7 @@ icacls "C:\inetpub\wwwroot" /grant "IUSR:(OI)(CI)(RX)"
 
 ---
 
-📜 Doküman Bilgileri
+## 📜 Doküman Bilgileri
 
 | Özellik | Değer |
 |---------|-------|
@@ -377,4 +416,3 @@ icacls "C:\inetpub\wwwroot" /grant "IUSR:(OI)(CI)(RX)"
 
 > 📧 **Destek İçin:** mserifselen@gmail.com  
 > 🔗 **GitHub Repository:** https://github.com/serifselen/Windows-Server-2025-Kurulum
-```
